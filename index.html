@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nossa caixinha</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#1b2a49;
+      --card:#243657;
+      --accent:#ff6b9a;
+      --lid:#ff85ab;
+      --muted:#9aa4b2;
+    }
+    *{box-sizing:border-box;font-family:'Poppins',system-ui,sans-serif}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:radial-gradient(circle at top left,var(--bg2),var(--bg1) 70%);
+      color:#fff;
+      overflow:hidden;
+      flex-direction:column;
+      gap:30px;
+    }
+    .box{
+      width:240px;
+      height:200px;
+      background:var(--card);
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 12px 35px rgba(0,0,0,0.6);
+      transition:transform 0.6s ease, box-shadow 0.6s ease;
+      position:relative;
+      perspective:1000px;
+      border:2px solid rgba(255,255,255,0.1);
+    }
+    .box:hover{transform:scale(1.05)}
+    .box.open{transform:scale(1.15);box-shadow:0 18px 60px rgba(0,0,0,0.8)}
+
+    .lid{
+      position:absolute;
+      top:0;left:0;right:0;
+      height:70px;
+      background:linear-gradient(135deg,var(--lid),var(--accent));
+      border-radius:16px 16px 0 0;
+      transform-origin:top center;
+      transition:transform 0.9s cubic-bezier(0.68,-0.55,0.27,1.55);
+      box-shadow:0 6px 20px rgba(0,0,0,0.4);
+    }
+    .box.open .lid{transform:rotateX(-160deg);}
+
+    .ribbon{
+      position:absolute;
+      top:0;bottom:0;left:50%;
+      width:30px;
+      background:rgba(255,255,255,0.2);
+      transform:translateX(-50%);
+      border-radius:8px;
+    }
+    .label{
+      z-index:2;
+      font-weight:600;
+      font-size:15px;
+      padding:8px 14px;
+      background:rgba(255,255,255,0.1);
+      border-radius:10px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.3);
+      color:#ffeaf2;
+    }
+
+.memory{
+  position:absolute;
+  opacity:0;
+  transform:translateY(40px) scale(0.85);
+  transition:all 0.7s ease;
+  width:240px;
+  height:260px; /* altura total do container */
+  border-radius:16px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  background:rgba(0,0,0,0.6);
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  border:3px solid rgba(255,255,255,0.15);
+  padding:10px 10px 0 10px; /* espaço interno para a legenda */
+  overflow:visible;
+}
+
+.memory img{
+  width:100%;
+  height:200px; /* altura fixa da imagem */
+  object-fit:cover;
+  border-radius:16px 16px 0 0;
+}
+
+.memory p{
+  margin-top:6px;
+  font-size:14px;
+  color:#ffeaf2;
+  text-align:center;
+  width:100%;
+}
+
+.memory.show{
+  opacity:1;
+  transform:translateY(-260px) scale(1);
+}
+
+  </style>
+</head>
+<body>
+  <div class="box" id="box">
+    <div class="lid"></div>
+    <div class="ribbon"></div>
+    <div class="label">Clique aqui 💝</div>
+  </div>
+
+  <!-- 7 elementos (imagens ou memórias). Substitua os src pelas imagens desejadas e edite as legendas -->
+  <div class="memory" id="m1"><img src="1.jpg" alt="Memória 1"><p>Nossa primeira fotinha togethers</p></div>
+  <div class="memory" id="m2"><img src="2.jpg" alt="Memória 2"><p>nosso first piquenique</p></div>
+  <div class="memory" id="m3"><img src="3.jpg" alt="Memória 3"><p>nossa primeira fotinha decente e namorandinho</p></div>
+  <div class="memory" id="m4"><img src="4.jpg" alt="Memória 4"><p>Esse dia desse piquenique ta no meu coração</p></div>
+  <div class="memory" id="m5"><img src="6.jpg" alt="Memória 5"><p>Todas as vezes q eu fico deitadinha com voce sao incriveis</p></div>
+  <div class="memory" id="m6"><img src="8.jpg" alt="Memória 6"><p>nois na ultima vez mto lindoquinhas</p></div>
+  <div class="memory" id="m7"><img src="NOSSO BABY.png" alt="Memória 7"><p>E esse é o nosso futuro togethers</p></div>
+
+<script>
+  const box = document.getElementById('box');
+  const memories = Array.from(document.querySelectorAll('.memory'));
+  let opened = false;
+  let index = 0;
+
+  function showMemory(i) {
+    memories.forEach(mem => mem.classList.remove('show')); // esconde todas
+    memories[i].classList.add('show'); // mostra só a atual
+  }
+
+  box.addEventListener('click', () => {
+    if (!opened) {
+      box.classList.add('open');
+      opened = true;
+    } else {
+      if (index < memories.length) {
+        showMemory(index);
+        index++;
+      }
+    }
+  });
+
+  document.body.addEventListener('click', (e) => {
+    if (e.target.closest('.box')) return;
+    if (opened && index < memories.length) {
+      showMemory(index);
+      index++;
+    }
+  });
+</script>
